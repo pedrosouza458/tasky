@@ -2,6 +2,9 @@ package com.template.spring_template.controllers;
 
 import com.template.spring_template.models.Task;
 import com.template.spring_template.repositories.TaskRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,8 +21,10 @@ public class TaskController {
     }
 
     @GetMapping
-    public List<Task> getTasks(){
-        return taskRepository.findAll();
+    public List<Task> getTasks(@RequestParam(defaultValue = "1") int page){
+        Pageable pageable = PageRequest.of(page - 1, 20);
+        Page<Task> taskPage = taskRepository.findAll(pageable);
+        return taskPage.getContent();
     }
 
     @GetMapping("/{id}")
