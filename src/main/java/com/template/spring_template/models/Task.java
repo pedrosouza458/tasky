@@ -1,9 +1,6 @@
 package com.template.spring_template.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,14 +14,18 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "task")
+@Table(name = "tasks")
 public class Task {
 
     @Id
     @GeneratedValue
     private UUID id;
+
     private String title;
     private String description;
+
+    @Column(name = "limit_date")
     private Date limitDate;
-    private Boolean done;
+
+    private Boolean done = false;
 }
