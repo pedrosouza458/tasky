@@ -1,31 +1,19 @@
-package com.template.spring_template.models;
+package com.template.tasky.dtos;
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
-import java.util.UUID;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name = "tasks")
-public class Task {
-
-    @Id
-    @GeneratedValue
-    private UUID id;
-
+public class UpdateTaskDTO {
     private String title;
     private String description;
-
-    @Column(name = "limit_date")
     private Date limitDate;
-
-    private Boolean done = false;
+    private Boolean done;
 }

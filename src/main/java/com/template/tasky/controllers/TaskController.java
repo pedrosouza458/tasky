@@ -1,7 +1,7 @@
-package com.template.spring_template.controllers;
+package com.template.tasky.controllers;
 
-import com.template.spring_template.models.Task;
-import com.template.spring_template.repositories.TaskRepository;
+import com.template.tasky.models.Task;
+import com.template.tasky.repositories.TaskRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -47,4 +47,9 @@ public class TaskController {
             return ResponseEntity.notFound().build(); // 404 Not Found
         }
     }
+
+//    @PatchMapping("/{id}")
+//    public Task updateTask(@PathVariable UUID id, @RequestBody Task task){
+//
+//    }
 }

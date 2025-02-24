@@ -1,4 +1,4 @@
-package com.template.spring_template;
+package com.template.tasky;
 
 import io.github.cdimascio.dotenv.Dotenv;
 import org.springframework.boot.SpringApplication;

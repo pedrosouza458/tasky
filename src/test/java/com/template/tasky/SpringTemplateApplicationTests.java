@@ -1,4 +1,4 @@
-package com.template.spring_template;
+package com.template.tasky;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
