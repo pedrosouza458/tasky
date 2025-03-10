@@ -68,8 +68,32 @@ public class TaskController {
         }
     }
 
-//    @PatchMapping("/{id}")
-//    public Task updateTask(@PathVariable UUID id, @RequestBody Task UpdateTaskDTO){
-//
-//    }
+    @PutMapping("/{id}")
+    public ResponseEntity<Object> updateTask(@PathVariable UUID id, @RequestBody UpdateTaskDTO task){
+        Optional<Task> result = taskRepository.findById(id);
+        if(result.isPresent()){
+            try {
+                Task updateTask = result.get();
+
+                if (task.getTitle() != null) updateTask.setTitle(task.getTitle());
+                if (task.getDescription() != null) updateTask.setDescription(task.getDescription());
+                if (task.getLimitDate() != null) updateTask.setLimitDate(task.getLimitDate());
+                if (task.getDone() != null) updateTask.setDone(task.getDone());
+
+                taskRepository.save(updateTask);
+
+                Map<String, String> response = new HashMap<>();
+                response.put("message", "Task update sucessfully");
+                return ResponseEntity.status(HttpStatus.OK).body(response);
+            } catch (RuntimeException e) {
+                Map<String, String> response = new HashMap<>();
+                response.put("message", "Failed to update task");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+            }
+        } else {
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "Task not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+    }
 }
