@@ -28,4 +28,8 @@ public class Task {
     private Date limitDate;
 
     private Boolean done = false;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 }
