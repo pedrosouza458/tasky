@@ -1,34 +1,109 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
+import { useEffect, useState } from "react";
 import "./App.css";
+import axios from "axios";
+import { Check, X } from "lucide-react";
+
+interface Task {
+  id: string;
+  title: string;
+  description: string;
+  done: boolean;
+}
 
 function App() {
-  const [count, setCount] = useState(0);
+  const [tasks, setTasks] = useState<Task[]>([]);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.target as HTMLFormElement);
+
+    // You can now grab form fields like this:
+    const title = formData.get("title") as string;
+    const description = formData.get("description") as string;
+
+    await axios.post("http://localhost:8080/tasks", {
+      title,
+      description,
+      limitDate: Date.now(),
+    });
+  };
+
+  const updateStatus = async (id: string, status: boolean) => {
+    let newStatus = status === false ? true : false;
+    try {
+      const response = await axios.put(`http://localhost:8080/tasks/${id}`, {
+        done: newStatus,
+      });
+    } catch (error) {
+      console.error("Error updating task status:", error);
+    }
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("http://localhost:8080/tasks");
+        const result = await response.data;
+        setTasks(result);
+      } catch (error) {
+        console.error("Failed to fetch tasks:", error);
+      }
+    };
+    fetchData();
+  }, []);
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div>
+      <h1 className="text-blue-700 font-semibold text-xl">Tasky</h1>
+      <div className="flex justify-center">
+        <div className="">
+          {tasks.map((task: Task) => (
+            <div
+              key={task.id}
+              className="max-h-20 max-w-72 my-3 border border-zinc-600"
+            >
+              <div className="mx-3">
+                <div className="flex justify-between">
+                  <h1>{task.title}</h1>
+                  <button
+                    onClick={() => updateStatus(task.id, task.done)}
+                    className="cursor-pointer"
+                  >
+                    <p>{task.done === true ? <Check /> : <X />}</p>
+                  </button>
+                </div>
+                <h2>{task.description}</h2>
+              </div>
+            </div>
+          ))}
+          <div>
+            <h2>Adicionar Tarefa</h2>
+            <form onSubmit={handleSubmit} className="flex flex-col gap-3 my-3">
+              <input
+                type="text"
+                name="title"
+                placeholder="Título"
+                className="border border-zinc-500"
+              />
+
+              <input
+                type="text"
+                name="description"
+                placeholder="Descrição"
+                className="border border-zinc-500"
+              />
+
+              <button
+                type="submit"
+                className="bg-blue-700 rounded-md text-white cursor-pointer"
+              >
+                <h1 className="my-1"> Adicionar</h1>
+              </button>
+            </form>
+          </div>
+        </div>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    </div>
   );
 }
 
