@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import axios from "axios";
 import { Check, X } from "lucide-react";
+import { createTask } from "./functions/create-task";
+import { updateTaskStatus } from "./requests/update-task-status";
 
 interface Task {
   id: string;
@@ -21,22 +23,7 @@ function App() {
     const title = formData.get("title") as string;
     const description = formData.get("description") as string;
 
-    await axios.post("http://localhost:8080/tasks", {
-      title,
-      description,
-      limitDate: Date.now(),
-    });
-  };
-
-  const updateStatus = async (id: string, status: boolean) => {
-    let newStatus = status === false ? true : false;
-    try {
-      const response = await axios.put(`http://localhost:8080/tasks/${id}`, {
-        done: newStatus,
-      });
-    } catch (error) {
-      console.error("Error updating task status:", error);
-    }
+    await createTask(title, description);
   };
 
   useEffect(() => {
@@ -66,7 +53,7 @@ function App() {
                 <div className="flex justify-between">
                   <h1>{task.title}</h1>
                   <button
-                    onClick={() => updateStatus(task.id, task.done)}
+                    onClick={() => updateTaskStatus(task.id, task.done)}
                     className="cursor-pointer"
                   >
                     <p>{task.done === true ? <Check /> : <X />}</p>
