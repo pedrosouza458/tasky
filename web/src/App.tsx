@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import axios from "axios";
 import { Check, X } from "lucide-react";
-import { createTask } from "./functions/create-task";
+import { createTask } from "./requests/create-task";
 import { updateTaskStatus } from "./requests/update-task-status";
 
 interface Task {
