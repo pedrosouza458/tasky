@@ -3,7 +3,6 @@ package com.template.tasky.controllers;
 import com.template.tasky.models.Task;
 import com.template.tasky.dtos.UpdateTaskDTO;
 import com.template.tasky.repositories.TaskRepository;
-import org.apache.coyote.Response;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;

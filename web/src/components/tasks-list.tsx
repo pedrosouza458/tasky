@@ -23,7 +23,6 @@ export function TasksList() {
 
   return (
     <div>
-      <h1 className="text-blue-700 font-semibold text-xl text-center">Tasky</h1>
       <div className="flex justify-center">
         <div className="flex flex-col gap-3">
           {tasks.map((task: TaskProps) => (

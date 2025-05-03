@@ -1,7 +1,6 @@
 package com.template.tasky.controllers;
 
 import com.template.tasky.models.Task;
-import com.template.tasky.models.User;
 import com.template.tasky.repositories.TaskRepository;
 import com.template.tasky.repositories.UserRepository;
 import org.springframework.http.HttpStatus;
@@ -22,17 +21,17 @@ public class UserController {
         this.userRepository = userRepository;
     }
 
-//    @GetMapping("/{id}")
-//    public ResponseEntity<Object> getUserById(@PathVariable UUID id){
-//        Optional<User> result = userRepository.findById(id)
-//        // Optional<User> result = userRepository.findById(id);
-//        if(result.isPresent()){
-//            return ResponseEntity.status(HttpStatus.OK).body(result.get());
-//        }
-//        else {
-//            Map<String, String> response = new HashMap<>();
-//            response.put("message", "User not found");
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-//        }
-//    }
+   @GetMapping("/{id}")
+   public ResponseEntity<Object> getUserById(@PathVariable UUID id){
+       Optional<User> result = userRepository.findById(id);
+       // Optional<User> result = userRepository.findById(id);
+       if(result.isPresent()){
+           return ResponseEntity.status(HttpStatus.OK).body(result.get());
+       }
+       else {
+           Map<String, String> response = new HashMap<>();
+           response.put("message", "User not found");
+           return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+       }
+   }
 }
