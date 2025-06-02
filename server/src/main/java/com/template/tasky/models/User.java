@@ -30,6 +30,13 @@ public class User implements UserDetails {
 
     private UserRole role;
 
+    public User(String name, String email, String password, UserRole role) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+    }
+
     // @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
    // private List<Task> tasks;
 
