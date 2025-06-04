@@ -1,7 +1,9 @@
 package com.template.tasky.controllers;
 
 import com.template.tasky.dtos.LoginDTO;
+import com.template.tasky.dtos.LoginResponseDTO;
 import com.template.tasky.dtos.RegisterDTO;
+import com.template.tasky.infra.security.TokenService;
 import com.template.tasky.models.User;
 import com.template.tasky.repositories.UserRepository;
 import jakarta.validation.Valid;
@@ -25,12 +27,17 @@ public class AuthController {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private TokenService tokenService;
+
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody @Valid LoginDTO data){
        var usernamePassword = new UsernamePasswordAuthenticationToken(data.email(), data.password());
        var auth = this.authenticationManager.authenticate(usernamePassword);
 
-       return ResponseEntity.ok().build();
+       var token = tokenService.generateToken((User) auth.getPrincipal());
+
+       return ResponseEntity.ok(new LoginResponseDTO(token));
     }
 
     @PostMapping("/register")
