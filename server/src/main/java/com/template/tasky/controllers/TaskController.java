@@ -79,10 +79,10 @@ public class TaskController {
             try {
                 Task updateTask = result.get();
 
-                if (task.getTitle() != null) updateTask.setTitle(task.getTitle());
-                if (task.getDescription() != null) updateTask.setDescription(task.getDescription());
-                if (task.getLimitDate() != null) updateTask.setLimitDate(task.getLimitDate());
-                if (task.getDone() != null) updateTask.setDone(task.getDone());
+                if (task.title() != null) updateTask.setTitle(task.title());
+                if (task.description() != null) updateTask.setDescription(task.description());
+                if (task.limitDate() != null) updateTask.setLimitDate(task.limitDate());
+                if (task.done() != null) updateTask.setDone(task.done());
 
                 taskRepository.save(updateTask);
 
