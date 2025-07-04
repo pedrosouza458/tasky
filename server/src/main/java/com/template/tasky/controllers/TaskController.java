@@ -27,17 +27,19 @@ public class TaskController {
     }
 
     @GetMapping
-    public List<Task> getTasks(@RequestParam(defaultValue = "1") int page){
+    public ResponseEntity<List<Task>> getTasks(@RequestParam(defaultValue = "1") int page){
         Pageable pageable = PageRequest.of(page - 1, 20);
         Page<Task> taskPage = taskRepository.findAll(pageable);
-        return ResponseEntity.status(HttpStatus.OK).body(taskPage.getContent()).getBody();
+        List<Task> tasks = taskPage.getContent();
+
+        return ResponseEntity.ok(tasks);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Object> getTaskById(@PathVariable UUID id){
         Optional<Task> result = taskRepository.findById(id);
         if(result.isPresent()){
-            return ResponseEntity.status(HttpStatus.OK).body(result.get());
+            return ResponseEntity.ok(result.get());
         }
         else {
             Map<String, String> response = new HashMap<>();
