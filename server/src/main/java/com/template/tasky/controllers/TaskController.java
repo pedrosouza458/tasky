@@ -75,31 +75,28 @@ public class TaskController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateTask(@PathVariable UUID id, @RequestBody UpdateTaskDTO task){
+    public ResponseEntity<Object> updateTask(@PathVariable UUID id, @RequestBody UpdateTaskDTO updateTaskDTO){
         Optional<Task> result = taskRepository.findById(id);
-        if(result.isPresent()){
-            try {
-                Task updateTask = result.get();
 
-                if (task.title() != null) updateTask.setTitle(task.title());
-                if (task.description() != null) updateTask.setDescription(task.description());
-                if (task.limitDate() != null) updateTask.setLimitDate(task.limitDate());
-                if (task.done() != null) updateTask.setDone(task.done());
-
-                taskRepository.save(updateTask);
-
-                Map<String, String> response = new HashMap<>();
-                response.put("message", "Task update sucessfully");
-                return ResponseEntity.status(HttpStatus.OK).body(response);
-            } catch (RuntimeException e) {
-                Map<String, String> response = new HashMap<>();
-                response.put("message", "Failed to update task");
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
-            }
-        } else {
+        if(result.isEmpty()){
             Map<String, String> response = new HashMap<>();
             response.put("message", "Task not found");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         }
+
+        try {
+            Task taskToUpdate = result.get();
+            taskToUpdate.updateTask(updateTaskDTO);
+            taskRepository.save(taskToUpdate);
+
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "Task update sucessfully");
+            return ResponseEntity.ok(response);
+        } catch (RuntimeException e) {
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "Failed to update task");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
+
     }
 }
