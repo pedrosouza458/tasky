@@ -1,5 +1,6 @@
 package com.template.tasky.models;
 
+import com.template.tasky.dtos.UpdateTaskDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -29,7 +30,18 @@ public class Task {
 
     private Boolean done = false;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    public void updateTask(UpdateTaskDTO updateTaskDTO){
+        if(updateTaskDTO.title() != null){
+            this.setTitle(updateTaskDTO.title());
+        }
+        if(updateTaskDTO.description() != null){
+            this.setDescription(updateTaskDTO.description());
+        }
+        if(updateTaskDTO.done() != null){
+            this.setDone(updateTaskDTO.done());
+        }
+        if(updateTaskDTO.limitDate() != null){
+            this.setLimitDate(updateTaskDTO.limitDate());
+        }
+    }
 }
